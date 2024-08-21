@@ -26,7 +26,8 @@ export function responseError<T = any>(code: ErrorCode, _detail?: T) {
  */
 export function responseSuccess<T>(data: T) {
   return {
-    status: 0,
-    data: data === undefined ? null : data,
+    code: 0,
+    result: data === undefined ? null : data,
+    message: '请求成功'
   }
 }

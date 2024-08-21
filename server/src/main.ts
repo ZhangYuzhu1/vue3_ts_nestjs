@@ -10,7 +10,9 @@ import { parseBoolRaw } from './utils/parseBoolRaw';
 async function bootstrap() {
   const logger = new Logger('Bootstrap')
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    cors: true,
+  });
 
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const packageJson = await require(join(__dirname, '../package.json'))

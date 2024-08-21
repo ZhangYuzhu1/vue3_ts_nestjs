@@ -1,6 +1,6 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Post, Req } from '@nestjs/common';
 import { UserService } from './user.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
 @ApiTags('用户')
@@ -10,6 +10,7 @@ export class UserController {
   ) { }
 
   @ApiOperation({ summary: '获取所有用户' })
+  @ApiBearerAuth()
   @Get()
   findAll() {
     return this._userSer.findAll()

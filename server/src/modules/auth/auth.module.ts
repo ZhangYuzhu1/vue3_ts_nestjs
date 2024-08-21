@@ -6,7 +6,7 @@ import { AuthGuard } from 'src/guard/auth.guard';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/entities/user';
 import { UserModule } from '../user/user.module';
-import { JwtAuthModule } from '../jwt/jwt/jwt.module';
+import { JwtAuthModule } from '../jwt/jwt.module';
 
 @Module({
   imports: [

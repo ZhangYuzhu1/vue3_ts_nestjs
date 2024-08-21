@@ -5,10 +5,10 @@ import * as md5 from 'md5'
 
 import { ErrorCode } from 'src/types/enum/error-code.enum';
 import { User } from 'src/entities/user';
-import { responseError } from 'src/utils/response';
+import { responseError, responseSuccess } from 'src/utils/response';
 import { LoginBodyDto } from './dto/login-body-dto';
 import { UserService } from '../user/user.service';
-import { JwtAuthService } from '../jwt/jwt/jwt.service';
+import { JwtAuthService } from '../jwt/jwt.service';
 
 @Injectable()
 export class AuthService {
@@ -32,7 +32,6 @@ export class AuthService {
     const qb = await this._userSer.qb().addSelect('u.password')
     await qb.where('username=:username', { username })
     const user = await qb.getOne()
-    console.log(user);
 
     if (!user)
       responseError(ErrorCode.USER_NOT_FOUND)
@@ -41,7 +40,9 @@ export class AuthService {
     if (user.password !== md5Password)
       responseError(ErrorCode.AUTH_PASSWORD_NOT_MATCHED)
 
-    return await this.signLoginTicket(user)
+    const res = await this.signLoginTicket(user)
+
+    return responseSuccess(res)
   }
 
   /**
@@ -52,7 +53,7 @@ export class AuthService {
   public async signLoginTicket(user: Partial<User>) {
     const sign = await this._jwtAuthSrv.signLoginAuthToken(user)
     return {
-      sign,
+      token: sign.access_token,
       user: {
         ...user,
         password: !!user.password,
